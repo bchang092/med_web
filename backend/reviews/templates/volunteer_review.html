@@ -1,0 +1,5 @@
+{% for review in reviews %}
+  <p>{{ review.date_submitted }}: {{ review.review_content }}</p>
+{% empty %}
+  <p>You have not submitted any reviews yet.</p>
+{% endfor %}
