@@ -41,7 +41,10 @@ class ReviewAdmin(admin.ModelAdmin):
      # Add a button above the table
     change_list_template = "admin/review_change_list.html"  # Custom template for adding the button
 
-    # Custom admin page for graphs
+###############################################################################################
+################### Graphical Display of Reviews ##############################################
+###############################################################################################
+
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [
