@@ -1,0 +1,24 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>Review Analytics</h1>
+
+<!-- Gauge Chart -->
+<div style="text-align:center;">
+    <h2>Overall Satisfaction</h2>
+    {{ graph1|safe }}
+</div>
+
+<div style="display:flex; justify-content:space-between;">
+    <!-- Department Ratings -->
+    <div style="width:48%;">
+        <h2>Department Ratings</h2>
+        {{ graph2|safe }}
+    </div>
+
+    <!-- Sentiment Analysis -->
+    <div style="width:48%;">
+        <h2>Sentiment Analysis</h2>
+        {{ graph3|safe }}
+    </div>
+</div>
+{% endblock %}

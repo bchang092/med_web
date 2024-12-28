@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.core.validators import MinValueValidator, MaxValueValidator
+from textblob import TextBlob
+
 
 class volunteer(models.Model):
     #volunteer attributes
@@ -22,11 +25,33 @@ class volunteer(models.Model):
 
 class Review(models.Model):
     #attribute notes: if volunteer gets deleted, cascade deletes all reviews
-    rating = models.IntegerField(help_text = "Rating")
-    volunteer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')  # one to many relationship: one user can make many reviews
-    department = models.CharField(max_length = 50, help_text = 'Department')
-    review_content = models.TextField(help_text="Your Review")  # Store the review content (text)
-    date_submitted = models.DateTimeField(auto_now_add=True)  # Automatically set the current date/time when the review is created
+    Rating = models.IntegerField(help_text = "Rating (1-10)", validators = [MinValueValidator(1), MaxValueValidator(10)],null=True,editable = True)
+    Volunteer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews',editable = True)  # one to many relationship: one user can make many reviews
+    Department = models.CharField(max_length = 50, help_text = 'Department',editable = True)
+    Review_Content = models.TextField(help_text="Your Review",editable = True)  # Store the review content (text)
+    Date_Submitted = models.DateTimeField(auto_now_add=True,editable = True)  # Automatically set the current date/time when the review is created
+
+    #sentiment analysis 
+    
+    Sentiment = models.TextField(editable = False)
+    
+    #sentiment analysis model: 
+    #note: so far we only have the sentiment: how can we model this on admin?
+    def save(self, *args, **kwargs):
+        # Perform sentiment analysis
+        blob = TextBlob(self.Review_Content)
+        polarity = blob.sentiment.polarity
+        if polarity > 0:
+            # self.sentiment = 'Positive'
+            Sentiment = 'Positive'
+        elif polarity < 0:
+            self.sentiment = 'Negative'
+            Sentiment = 'Negative'
+        else:
+            self.sentiment = 'Neutral'
+            Sentiment = 'Neutral'
+        print(f"Sentiment: {self.sentiment}")
+        super().save(*args, **kwargs)
 
 
     #return url to particular review 
@@ -35,10 +60,10 @@ class Review(models.Model):
     
     #returns string representing review object
     def __str__(self):
-        return f'{self.department}, {self.rating}, {self.date_submitted}' 
+        return f'{self.Department}, {self.Rating}, {self.Date_Submitted}' 
     
     class Meta:
-        ordering = ['date_submitted','-rating']
+        ordering = ['Date_Submitted','-Rating']
 
         #these permissions can be later defined in admin
         permissions = [('can_create_review','Can create a review'),
@@ -46,6 +71,7 @@ class Review(models.Model):
                         ('can_view_review','Can view reviews')]
 
    
+
 
 
 

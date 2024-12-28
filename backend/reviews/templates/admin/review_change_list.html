@@ -1,0 +1,44 @@
+{% extends "admin/change_list.html" %}
+
+{% block object-tools %}
+<style>
+    .button {
+        display: inline-block;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        background-color: gray;
+        border: 2px solid black;
+        border-radius: 5px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .button:hover {
+        background-color: black;
+        color: white;
+    }
+
+    .button:active {
+        background-color: darkgray;
+    }
+
+    /* Position the button at the top-right corner */
+    .object-tools {
+        position: relative;
+    }
+
+    .object-tools .button {
+        position: absolute;
+        top: 10px;  /* Adjust the distance from the top */
+        right: 10px;  /* Adjust the distance from the right */
+    }
+</style>
+
+<div>
+    <a href="{% url 'admin:review-stats' %}" class="button">View Stats</a>
+</div>
+{{ block.super }}
+{% endblock %}
