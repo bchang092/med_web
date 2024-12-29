@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import HttpResponse
 from django.urls import reverse
+from reviews.models import volunteer
 
 #Home page
 def home_page (request):
@@ -22,6 +23,8 @@ def register_user(request):
     #post a dictionary like object that can temporarily handle data sent via HTTP
     if request.method == 'POST':
         username = request.POST['username']
+        vol_fname = request.POST['vol_fname']
+        vol_lname = request.POST['vol_lname']
         email = request.POST['email']
         password1 = request.POST['password1'] 
         password2 = request.POST['password2']
@@ -31,16 +34,36 @@ def register_user(request):
             messages.error(request, "Passwords do not match!")
             return redirect('register')
 
+        # Check if username or email already exists
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username is already taken!")
+            storage = messages.get_messages(request)
+            return render(request, 'authentication/register.html')
+        
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email is already taken!")
+            storage = messages.get_messages(request)
+            return render(request, 'authentication/register.html')
         # Create the user
         try:
-            user = User.objects.create_user(username=username, email=email, password=password1)
+            user = User.objects.create_user(username=username, email=email, password=password1,
+                                            first_name=vol_fname, last_name=vol_lname )
             user.save()
-            messages.success(request, "Account created successfully!")
-            return redirect('login')
-        except:
-            messages.error(request, "Username already exists!")
-            return redirect('register')
 
+            # # Then create the Volunteer object linked to the User
+            # volunteer.objects.create(
+            #     user=user,
+            #     email=email,
+            #     vol_fname=vol_fname,
+            #     vol_lname=vol_lname,
+            #     is_active = True)
+            login_url = reverse('login')
+            return redirect(login_url)
+        except:
+            storage = messages.get_messages(request)
+            messages.error(request, "Username already exists!")
+    #sanity check; shouldn't reach this line of code
+    storage = messages.get_messages(request)
     return render(request, 'authentication/register.html')
 
 
@@ -74,11 +97,3 @@ def logout_user(request):
     messages.success(request, "Logged out successfully!")
     return redirect('home')
 
-
-# @login_required
-# def user_home(request):
-#     return render(request, 'accounts/user_home.html')
-
-# @login_required
-# def admin_home(request):
-#     return render(request, 'accounts/admin_home.html')

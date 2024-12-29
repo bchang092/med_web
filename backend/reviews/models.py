@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
-from textblob import TextBlob
 
 
 class volunteer(models.Model):
@@ -32,26 +31,11 @@ class Review(models.Model):
     Date_Submitted = models.DateTimeField(auto_now_add=True,editable = True)  # Automatically set the current date/time when the review is created
 
     #sentiment analysis 
-    
     Sentiment = models.TextField(editable = False)
+    Volunteer_First_Name = models.CharField(max_length=50, editable=False, null=True, blank = True)
+    Volunteer_Last_Name = models.CharField(max_length=50, editable=False, null=True, blank = True)
     
-    #sentiment analysis model: 
-    #note: so far we only have the sentiment: how can we model this on admin?
-    def save(self, *args, **kwargs):
-        # Perform sentiment analysis
-        blob = TextBlob(self.Review_Content)
-        polarity = blob.sentiment.polarity
-        if polarity > 0:
-            # self.sentiment = 'Positive'
-            Sentiment = 'Positive'
-        elif polarity < 0:
-            self.sentiment = 'Negative'
-            Sentiment = 'Negative'
-        else:
-            self.sentiment = 'Neutral'
-            Sentiment = 'Neutral'
-        print(f"Sentiment: {self.sentiment}")
-        super().save(*args, **kwargs)
+
 
 
     #return url to particular review 

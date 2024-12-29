@@ -13,11 +13,11 @@ from django.utils.safestring import mark_safe
 
 
 #register the classes to enable CRUD operations (create, read, update, delete)
-# admin.site.register(volunteer)
+admin.site.register(volunteer)
 
 class ReviewAdmin(admin.ModelAdmin):
     # **Display fields as columns**
-    list_display = ('id', 'Volunteer', 'Rating', 'Date_Submitted','Department', 'Sentiment','Review_Content')  # Columns to display
+    list_display = ('Volunteer','Volunteer_First_Name','Volunteer_Last_Name', 'Rating', 'Date_Submitted','Department', 'Sentiment','Review_Content')  # Columns to display
     
     # Enable filtering options
     list_filter = ('Rating', 'Sentiment', 'Department', 'Date_Submitted')  # Add filter options
@@ -33,7 +33,7 @@ class ReviewAdmin(admin.ModelAdmin):
     list_per_page = 20  # Show 20 reviews per page
 
     # Enable clickable rows (detail view)
-    list_display_links = ('id', 'Volunteer')  # Clicking these fields opens the detail view
+    list_display_links = ('Volunteer',)  # Clicking these fields opens the detail view
     
     # Read-only fields (for viewing)
     # readonly_fields = ('id', 'Volunteer', 'Rating', 'Date_Submitted', 'Review_Content')
