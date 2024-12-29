@@ -55,14 +55,15 @@ def login_user(request):
         user = authenticate(request, username=username, password=password) #returns none if nothing is found
         if user is not None:
             login(request, user)
-            messages.success(request, "Logged in successfully!")
+            # messages.success(request, "Logged in successfully!")
             volunteer_url = reverse('volunteer_page')  # Named URL for the volunteer page
             return redirect(volunteer_url)
 
         else:
-            messages.error(request, "Invalid username or password!",{'error': 'Invalid credentials'})
-            return render(request, 'authentication/login.html', {'error': 'Invalid credentials'})
+            messages.error(request, "Invalid username or password! Try again.")
 
+    #clear out messages after they are redered once
+    storage = messages.get_messages(request)
     return render(request, 'authentication/login.html')
 
 
