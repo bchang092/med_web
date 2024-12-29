@@ -35,8 +35,8 @@ class Review(models.Model):
     Volunteer_First_Name = models.CharField(max_length=50, editable=False, null=True, blank = True)
     Volunteer_Last_Name = models.CharField(max_length=50, editable=False, null=True, blank = True)
     
-
-
+    #admin response attribute to review
+    Admin_Response = models.TextField(blank=True, null=True)  # New field
 
     #return url to particular review 
     def get_absolute_url(self):

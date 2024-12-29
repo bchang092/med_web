@@ -50,13 +50,6 @@ def register_user(request):
                                             first_name=vol_fname, last_name=vol_lname )
             user.save()
 
-            # # Then create the Volunteer object linked to the User
-            # volunteer.objects.create(
-            #     user=user,
-            #     email=email,
-            #     vol_fname=vol_fname,
-            #     vol_lname=vol_lname,
-            #     is_active = True)
             login_url = reverse('login')
             return redirect(login_url)
         except:
@@ -69,6 +62,8 @@ def register_user(request):
 
 # User Login View
 def login_user(request):
+    storage = messages.get_messages(request)
+
     #check passcode
     if request.method == 'POST':
         username = request.POST['username']
@@ -86,7 +81,6 @@ def login_user(request):
             messages.error(request, "Invalid username or password! Try again.")
 
     #clear out messages after they are redered once
-    storage = messages.get_messages(request)
     return render(request, 'authentication/login.html')
 
 

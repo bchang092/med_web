@@ -17,11 +17,14 @@ admin.site.register(volunteer)
 
 class ReviewAdmin(admin.ModelAdmin):
     # **Display fields as columns**
-    list_display = ('Volunteer','Volunteer_First_Name','Volunteer_Last_Name', 'Rating', 'Date_Submitted','Department', 'Sentiment','Review_Content')  # Columns to display
+    list_display = ('Volunteer','Volunteer_First_Name','Volunteer_Last_Name', 'Rating', 'Date_Submitted','Department', 'Sentiment','Review_Content','Admin_Response')  # Columns to display
     
     # Enable filtering options
     list_filter = ('Rating', 'Sentiment', 'Department', 'Date_Submitted')  # Add filter options
     
+    # Editable option for admin
+    list_editable = ('Admin_Response',)  # Allow inline editing of responses
+
     # **Enable sorting by columns**
     ordering = ('-Date_Submitted',)  # Default sorting (newest first)
     
