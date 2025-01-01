@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Volunteer Page</title>
+    <style>
+        .form-popup {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -20%);
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: white;
+            z-index: 1000;
+        }
+        .reviews, .responses {
+            position: absolute;
+            width: 45%;
+            padding: 10px;
+            box-shadow: 0px 0px 5px #ccc;
+            border: 1px solid #ddd;
+        }
+        .reviews {
+            bottom: 10px;
+            left: 10px;
+        }
+        .responses {
+            bottom: 10px;
+            right: 10px;
+        }
+    </style>
+    <script>
+        function toggleForm() {
+            const formPopup = document.getElementById('form-popup');
+            formPopup.style.display = formPopup.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <button onclick="toggleForm()" style="margin-top: 10px;">Submit a Review</button>
+    </header>
+
+    <!-- Review Form -->
+    <div id="form-popup" class="form-popup">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit Review</button>
+            <button type="button" onclick="toggleForm()">Close</button>
+        </form>
+    </div>
+
+    <!-- List of Previous Reviews -->
+    <div class="reviews">
+        <h3>Your Previous Reviews</h3>
+        <ul>
+            {% for review in user_reviews %}
+                <li>{{ review.Date_Submitted }} - {{ review.Review_Content }}</li>
+            {% empty %}
+                <p>No reviews submitted yet.</p>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Admin Responses -->
+    <div class="responses">
+        <h3>Admin Responses</h3>
+        <ul>
+            {% for review in user_reviews %}
+                {% if review.Admin_Response %}
+                    <li>{{ review.Date_Submitted }} - {{ review.Admin_Response }}</li>
+                {% endif %}
+            {% empty %}
+                <p>No responses yet.</p>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <header>
+        <a href="{% url 'logout' %}" style="margin-left: 20px;">Log Out</a>
+    </header>
+    
+    
+</body>
+</html>
