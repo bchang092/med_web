@@ -10,7 +10,7 @@ def volunteer_page(request):
     if request.method =='POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
-            #saving detials of volunteer 
+            #saving details of volunteer 
             review = form.save(commit=False)
             review.Volunteer = request.user
             review.Volunteer_First_Name = request.user.first_name
@@ -36,7 +36,15 @@ def volunteer_page(request):
     else:
         form = ReviewForm()
 
-    # For GET request (page load), fetch and pass the reviews
-    reviews = Review.objects.filter(Volunteer=request.user).order_by('-Date_Submitted')
+    #get requests are here
+    user_reviews = Review.objects.filter(Volunteer=request.user)
+    admin_responses = Review.objects.filter(Volunteer=request.user).exclude(Admin_Response__isnull=True)
+
+    context = {
+        'form': form,
+        'user_reviews': user_reviews,
+        'admin_responses':admin_responses,
+    }
+
     #view page 
-    return render(request, 'volunteer/volunteer_home_page.html', {'reviews': reviews})
+    return render(request, 'volunteer/volunteer_home_page.html',context)

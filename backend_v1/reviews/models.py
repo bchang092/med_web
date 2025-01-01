@@ -24,10 +24,10 @@ class volunteer(models.Model):
 
 class Review(models.Model):
     #attribute notes: if volunteer gets deleted, cascade deletes all reviews
-    Rating = models.IntegerField(help_text = "Rating (1-10)", validators = [MinValueValidator(1), MaxValueValidator(10)],null=True,editable = True)
+    Rating = models.IntegerField( validators = [MinValueValidator(1), MaxValueValidator(10)],null=True,editable = True)
     Volunteer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews',editable = True)  # one to many relationship: one user can make many reviews
-    Department = models.CharField(max_length = 50, help_text = 'Department',editable = True)
-    Review_Content = models.TextField(help_text="Your Review",editable = True)  # Store the review content (text)
+    Department = models.CharField(max_length = 50,editable = True)
+    Review_Content = models.TextField(editable = True)  # Store the review content (text)
     Date_Submitted = models.DateTimeField(auto_now_add=True,editable = True)  # Automatically set the current date/time when the review is created
 
     #sentiment analysis 

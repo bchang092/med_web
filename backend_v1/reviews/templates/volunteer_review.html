@@ -1,5 +1,148 @@
-{% for review in reviews %}
-  <p>{{ review.date_submitted }}: {{ review.review_content }}</p>
-{% empty %}
-  <p>You have not submitted any reviews yet.</p>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Volunteer Page</title>
+    <style>
+        .form-popup {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -20%);
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: white;
+            z-index: 1000;
+        }
+        .reviews, .responses {
+            position: absolute;
+            width: 45%;
+            padding: 10px;
+            box-shadow: 0px 0px 5px #ccc;
+            border: 1px solid #ddd;
+        }
+
+
+        /* Review display the container at the bottom left corner */
+        .reviews-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 40%; /* Increase width to 40% */
+            height: 50%; /* Increase height to 50% */
+            padding: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            font-family: Arial, sans-serif;
+        }
+
+        .reviews-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .reviews-table th, .reviews-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .reviews-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .reviews-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .reviews-table tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .reviews-table td[colspan="3"] {
+            text-align: center;
+            font-style: italic;
+        }
+
+        /*end*/
+
+        .responses {
+            bottom: 10px;
+            right: 10px;
+        }
+    </style>
+    <script>
+        function toggleForm() {
+            const formPopup = document.getElementById('form-popup');
+            formPopup.style.display = formPopup.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <button onclick="toggleForm()" style="margin-top: 10px;">Submit a Review</button>
+    </header>
+
+    <!-- Review Form -->
+    <div id="form-popup" class="form-popup">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit Review</button>
+            <button type="button" onclick="toggleForm()">Close</button>
+        </form>
+    </div>
+
+    <!-- List of Previous Reviews -->
+    <div class="reviews-container">
+        <h3>Your Previous Reviews</h3>
+        <table class="reviews-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date Submitted</th>
+                    <th>Review Content</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for review in user_reviews %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ review.Date_Submitted }}</td>
+                        <td>{{ review.Review_Content }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3">No reviews submitted yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+
+    <!-- Admin Responses -->
+    <div class="responses">
+        <h3>Admin Responses</h3>
+        <ul>
+            {% for review in user_reviews %}
+                {% if review.Admin_Response %}
+                    <li>{{ review.Date_Submitted }} - {{ review.Admin_Response }}</li>
+                {% endif %}
+            {% empty %}
+                <p>No responses yet.</p>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <header>
+        <a href="{% url 'logout' %}" style="margin-left: 20px;">Log Out</a>
+    </header>
+    
+    
+</body>
+</html>

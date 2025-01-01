@@ -2,87 +2,255 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Volunteer Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Review Page</title>
     <style>
-        .form-popup {
-            display: none;
-            position: fixed;
-            top: 20%;
-            left: 50%;
-            transform: translate(-50%, -20%);
-            border: 1px solid #ccc;
-            padding: 20px;
-            background-color: white;
-            z-index: 1000;
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
         }
-        .reviews, .responses {
-            position: absolute;
-            width: 45%;
-            padding: 10px;
-            box-shadow: 0px 0px 5px #ccc;
+
+        /* Container for Page */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styling */
+        .header {
+            background-color: #2C3E50;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        /* Button Styling */
+        .button-container {
+            margin-top: 10px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn {
+            background-color: #E74C3C;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .logout-btn:hover {
+            background-color: #C0392B;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        /* Submit Review Section */
+        .submit-review {
+            background-color: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .submit-review h2 {
+            color: #2980B9;
+            font-size: 1.8em;
+        }
+
+        .submit-review form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .submit-review form input,
+        .submit-review form textarea {
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1em;
+        }
+
+        .submit-review form textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-review form button {
+            background-color: #3498DB;
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            margin-top: 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+
+        .submit-review form button:hover {
+            background-color: #2980B9;
+        }
+
+        /* Reviews and Responses Layout */
+        .reviews-container, .responses-container {
+            background-color: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border: 1px solid #ddd;
         }
-        .reviews {
-            bottom: 10px;
-            left: 10px;
+
+        .reviews-container h3, .responses-container h3 {
+            color: #2980B9;
+            font-size: 1.5em;
+            margin-bottom: 20px;
         }
-        .responses {
-            bottom: 10px;
-            right: 10px;
+
+        .reviews-table,
+        .responses-list {
+            width: 100%;
+            margin-top: 15px;
+            border-collapse: collapse;
+        }
+
+        .reviews-table th,
+        .responses-list li {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .reviews-table th {
+            background-color: #3498DB;
+            color: white;
+        }
+
+        .reviews-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .reviews-table tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .responses-list li {
+            background-color: #ecf0f1;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        /* Layout Flex Styling */
+        .two-column-layout {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        /* Footer/Spacing */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #2C3E50;
+            color: white;
         }
     </style>
-    <script>
-        function toggleForm() {
-            const formPopup = document.getElementById('form-popup');
-            formPopup.style.display = formPopup.style.display === 'block' ? 'none' : 'block';
-        }
-    </script>
 </head>
 <body>
-    <header>
-        <button onclick="toggleForm()" style="margin-top: 10px;">Submit a Review</button>
-    </header>
 
-    <!-- Review Form -->
-    <div id="form-popup" class="form-popup">
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Submit Review</button>
-            <button type="button" onclick="toggleForm()">Close</button>
-        </form>
+    <div class="container">
+        <header class="header">
+            <h1>Welcome to Your Volunteer Dashboard</h1>
+            <div class="button-container">
+                <a href="{% url 'logout' %}" class="btn logout-btn">Logout</a>
+            </div>
+        </header>
+
+        <div class="main-content">
+
+            <!-- Submit Review Section -->
+            <div class="submit-review">
+                <h2>Submit a Review</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn submit-btn">Submit Review</button>
+                </form>
+            </div>
+
+            <!-- Reviews and Admin Responses Layout -->
+            <div class="two-column-layout">
+                <div class="reviews-container">
+                    <h3>Your Previous Reviews</h3>
+                    <table class="reviews-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Date Submitted</th>
+                                <th>Review Content</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for review in user_reviews %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ review.Date_Submitted }}</td>
+                                    <td>{{ review.Review_Content }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3">No reviews submitted yet.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="responses-container">
+                    <h3>Admin Responses</h3>
+                    <ul class="responses-list">
+                        {% for review in user_reviews %}
+                            {% if review.Admin_Response %}
+                                <li>{{ review.Date_Submitted }} - {{ review.Admin_Response }}</li>
+                            {% endif %}
+                        {% empty %}
+                            <li>No responses yet.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- List of Previous Reviews -->
-    <div class="reviews">
-        <h3>Your Previous Reviews</h3>
-        <ul>
-            {% for review in user_reviews %}
-                <li>{{ review.Date_Submitted }} - {{ review.Review_Content }}</li>
-            {% empty %}
-                <p>No reviews submitted yet.</p>
-            {% endfor %}
-        </ul>
-    </div>
+    <footer>
+        <p>&copy; 2024 Volunteer Dashboard</p>
+    </footer>
 
-    <!-- Admin Responses -->
-    <div class="responses">
-        <h3>Admin Responses</h3>
-        <ul>
-            {% for review in user_reviews %}
-                {% if review.Admin_Response %}
-                    <li>{{ review.Date_Submitted }} - {{ review.Admin_Response }}</li>
-                {% endif %}
-            {% empty %}
-                <p>No responses yet.</p>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <header>
-        <a href="{% url 'logout' %}" style="margin-left: 20px;">Log Out</a>
-    </header>
-    
-    
 </body>
 </html>
