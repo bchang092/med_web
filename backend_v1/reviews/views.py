@@ -9,6 +9,8 @@ from .models import Review
 def volunteer_page(request):
     if request.method =='POST':
         form = ReviewForm(request.POST)
+        print(form.errors)
+
         if form.is_valid():
             #saving details of volunteer 
             review = form.save(commit=False)

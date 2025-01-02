@@ -2,147 +2,298 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Volunteer Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Review Page</title>
     <style>
-        .form-popup {
-            display: none;
-            position: fixed;
-            top: 20%;
-            left: 50%;
-            transform: translate(-50%, -20%);
-            border: 1px solid #ccc;
-            padding: 20px;
-            background-color: white;
-            z-index: 1000;
-        }
-        .reviews, .responses {
-            position: absolute;
-            width: 45%;
-            padding: 10px;
-            box-shadow: 0px 0px 5px #ccc;
-            border: 1px solid #ddd;
-        }
-
-
-        /* Review display the container at the bottom left corner */
-        .reviews-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 40%; /* Increase width to 40% */
-            height: 50%; /* Increase height to 50% */
-            padding: 10px;
-            background-color: #f9f9f9;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
+        /* General Styles */
+        body {
             font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #e5e5e5;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #2d2d2d;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid #1e8e3e; /* Green border below header */
+        }
+      
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        /*general button*/
+        .btn {
+            padding: 10px 20px;
+            background-color: #a3f0b9;
+            color: rgb(138, 116, 116);
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        /* Style for the Logout Button */
+        .logout-btn {
+            background-color: #ff9b84;
+            color: rgb(138, 116, 116);
+            position: absolute;  /* Absolute positioning for custom location */
+            top: 250px;           /* Distance from the top */
+            right: 100px;         /* Distance from the right */
+            bottom: 1000px;        /* Distance from the bottom */
+            left: 1000px;         /* Adjust to desired location */
+            }
+
+        /* Style for the Submit Review Button */
+        .submit-btn {
+            background-color: #000000;
+            color: rgb(255, 255, 255);
+            position: absolute;  /* Absolute positioning for custom location */
+            top: 215px;           /* Distance from the top */
+            right: 100px;         /* Distance from the right */
+            bottom: 1035px;        /* Distance from the bottom */
+            left: 10px;         /* Adjust to desired location */
+            width: 700px;         /* Width of the button */
+            height: 35px;
+        }
+
+        .btn:hover {
+            background-color: #37663e; /* Darker green on hover */
+        }
+
+        .btn.logout-btn {
+            border: 2px solid #e5e5e5; /* Border for the logout button */
+        }
+
+        .btn.submit-btn {
+            border: 2px solid #e5e5e5; /* Border for submit button */
+        }
+
+        .btn:focus {
+            outline: none;
+        }
+
+
+
+        /* Background behind the Volunteer Review header */
+        .header-bg {
+            background-color: #1e8e3e;
+            padding: 30px 0;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        /* Reviews Container */
+        .reviews-container {
+            background-color: #2d2d2d;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #333;
+            margin-top: 20px;
+            overflow-x: auto;
         }
 
         .reviews-table {
             width: 100%;
+            margin-top: 15px;
             border-collapse: collapse;
-            margin-top: 10px;
+            table-layout: fixed;
         }
 
-        .reviews-table th, .reviews-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
+        .reviews-table th,
+        .reviews-table td {
+            padding: 15px;
             text-align: left;
+            border: 1px solid #444;
+        }
+
+        .reviews-table th:nth-child(1),
+        .reviews-table td:nth-child(1) {
+            width: 5%;
+        }
+
+        .reviews-table th:nth-child(2),
+        .reviews-table td:nth-child(2) {
+            width: 15%;
+        }
+
+        .reviews-table th:nth-child(3),
+        .reviews-table td:nth-child(3) {
+            width: 50%;
+        }
+
+        .reviews-table th:nth-child(4),
+        .reviews-table td:nth-child(4) {
+            width: 30%;
         }
 
         .reviews-table th {
-            background-color: #f2f2f2;
-            font-weight: bold;
+            background-color: #1e8e3e;
+            color: white;
         }
 
         .reviews-table tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #333;
         }
 
         .reviews-table tr:nth-child(odd) {
-            background-color: #ffffff;
+            background-color: #2d2d2d;
         }
 
-        .reviews-table td[colspan="3"] {
-            text-align: center;
-            font-style: italic;
+        /* Scrollable content */
+        .scrollable-content {
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #3b3b3b;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
-        /*end*/
+        /* Popup Form */
+        .popup-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            width: 80%;
+            max-width: 500px;
+        }
 
-        .responses {
-            bottom: 10px;
-            right: 10px;
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        /* Form Layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        label {
+            font-weight: bold;
+            color: #e5e5e5;
+        }
+
+        input, textarea {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #2d2d2d;
+            color: #e5e5e5;
+        }
+
+        textarea {
+            min-height: 120px;
+        }
+
+        .form-grid p + p {
+            margin-top: 10px;
         }
     </style>
-    <script>
-        function toggleForm() {
-            const formPopup = document.getElementById('form-popup');
-            formPopup.style.display = formPopup.style.display === 'block' ? 'none' : 'block';
-        }
-    </script>
 </head>
 <body>
-    <header>
-        <button onclick="toggleForm()" style="margin-top: 10px;">Submit a Review</button>
-    </header>
+    <div class="container">
+        <header class="header">
+            <div class="header-bg">
+                <h1>Volunteer Dashboard</h1>
+                <div class="button-container">
+                    <a href="{% url 'logout' %}" class="btn logout-btn">Logout</a>
+                    <button class="btn submit-btn" id="showFormBtn">Submit a Review</button>
+                </div>
+            </div>
+        </header>
 
-    <!-- Review Form -->
-    <div id="form-popup" class="form-popup">
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Submit Review</button>
-            <button type="button" onclick="toggleForm()">Close</button>
-        </form>
-    </div>
+        <div class="divider"></div>
 
-    <!-- List of Previous Reviews -->
-    <div class="reviews-container">
-        <h3>Your Previous Reviews</h3>
-        <table class="reviews-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Date Submitted</th>
-                    <th>Review Content</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for review in user_reviews %}
+        <!-- Popup Form -->
+        <div class="overlay" id="overlay"></div>
+        <div class="popup-form" id="popupForm">
+            <h2>Submit a Review</h2>
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="form-grid">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="btn">Submit Review</button>
+            </form>
+            <button id="closeFormBtn" class="btn">Close</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Reviews and Responses Section -->
+        <div class="reviews-container">
+            <h2>Your Reviews</h2>
+            <table class="reviews-table">
+                <thead>
                     <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ review.Date_Submitted }}</td>
-                        <td>{{ review.Review_Content }}</td>
+                        <th>#</th>
+                        <th>Date Submitted</th>
+                        <th>Review Content</th>
+                        <th>Admin Response</th>
                     </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="3">No reviews submitted yet.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    
-
-    <!-- Admin Responses -->
-    <div class="responses">
-        <h3>Admin Responses</h3>
-        <ul>
-            {% for review in user_reviews %}
-                {% if review.Admin_Response %}
-                    <li>{{ review.Date_Submitted }} - {{ review.Admin_Response }}</li>
-                {% endif %}
-            {% empty %}
-                <p>No responses yet.</p>
-            {% endfor %}
-        </ul>
+                </thead>
+                <tbody>
+                    {% for review in user_reviews %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ review.Date_Submitted }}</td>
+                            <td class="scrollable-content">{{ review.Review_Content }}</td>
+                            <td class="scrollable-content">{% if review.Admin_Response %}{{ review.Admin_Response }}{% else %}No Response Yet{% endif %}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">No reviews submitted yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <header>
-        <a href="{% url 'logout' %}" style="margin-left: 20px;">Log Out</a>
-    </header>
-    
-    
+    <!-- JavaScript to handle showing and hiding the popup -->
+    <script>
+        document.getElementById('showFormBtn').onclick = function() {
+            document.getElementById('popupForm').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        };
+
+        document.getElementById('closeFormBtn').onclick = function() {
+            document.getElementById('popupForm').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        };
+
+        document.getElementById('overlay').onclick = function() {
+            document.getElementById('popupForm').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        };
+    </script>
 </body>
 </html>
