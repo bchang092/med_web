@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from django.template.response import TemplateResponse
-from .models import Review, volunteer #imported models 
+from .models import Review #imported models 
 import matplotlib.pyplot as plt
 import plotly.express as px
 import pandas as pd
@@ -13,7 +13,7 @@ from django.utils.safestring import mark_safe
 
 
 #register the classes to enable CRUD operations (create, read, update, delete)
-admin.site.register(volunteer)
+# admin.site.register(volunteer)
 
 class ReviewAdmin(admin.ModelAdmin):
     # **Display fields as columns**

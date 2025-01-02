@@ -1,85 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <style>
-        /* Style for error messages */
-        .message {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            font-size: 14px;
-            text-align: center;
-        }
-
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        /* Style for the form inputs */
-        input {
-            display: block;
-            margin: 10px 0;
-            padding: 8px;
-            width: 100%;
-            max-width: 300px;
-        }
-
-        button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            max-width: 300px;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-    <h2>Register</h2>
-
-    <!-- Display error messages if there are any -->
-    {% if messages %}
-        {% for message in messages %}
-            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-
-    <!-- Registration Form -->
-    <form method="POST">
-        {% csrf_token %}
-        
-        <!-- Username Field -->
-        <input type="text" name="username" placeholder="Username" required><br>
-        
-        <!-- Email Field -->
-        <input type="email" name="email" placeholder="Email" required><br>
-        
-        <!-- First Name (Volunteer Model) -->
-        <input type="text" name="vol_fname" placeholder="First Name" required><br>
-        
-        <!-- Last Name (Volunteer Model) -->
-        <input type="text" name="vol_lname" placeholder="Last Name" required><br>
-        
-        <!-- Password Field -->
-        <input type="password" name="password1" placeholder="Password" required><br>
-        
-        <!-- Confirm Password Field -->
-        <input type="password" name="password2" placeholder="Confirm Password" required><br>
-        
-        <!-- Submit Button -->
-        <button type="submit">Register</button>
-    </form>
-</body>
-</html>
+{% if form.non_field_errors %}
+    {% for message in form.non_field_errors %}
+            {{ message }}
+    {% endfor %}
+{% endif %}
+<form method="post">
+    {% csrf_token %}
+    <label for="email">email</label>
+    {{ form.email }}
+    <label for="password">Password</label>
+    {{ form.password }}
+    <input type="submit" />
+</form>

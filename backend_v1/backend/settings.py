@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'reviews',
-    'rest_framework'
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -64,7 +64,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'reviews/templates',  # review templates
+            BASE_DIR / 'reviews/templates', BASE_DIR/'authentication/templates', # review templates
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -109,6 +109,18 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = 'authentication.CustomUser'
+
+#email backend stuff; add email and passowrd later when create one 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "youremail@gmail.com"
+EMAIL_HOST_PASSWORD = "your email password"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "Delight youremail@gmail.com"
+
 
 
 # Internationalization
